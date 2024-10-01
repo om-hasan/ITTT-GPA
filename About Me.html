@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<style>
+	    body {
+            font-family: 'Poppins';
+            background: linear-gradient(235deg, #ffffff, #000000);
+	        animation: waveAnimation 2s linear infinite;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .about-container {
+
+            background: linear-gradient(235deg, #ffffff, #000000);
+	        animation: waveAnimation 2s linear infinite;
+            padding: 75px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.1); 
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5), 
+               0 0 20px rgba(255, 255, 255, 0.3) inset; 
+            text-align: center;
+        }
+
+        h1 {
+
+            margin-bottom: 20px;
+        }
+        
+		.edit-link {
+            color: white; 
+            text-decoration: none; 
+            font-weight: bold;
+        }
+        .edit-link:hover {
+            text-decoration: underline; 
+        }
+		
+        button {
+
+            background-color: #00001f;
+            color: #fff;
+            padding: 10px 20px;
+            font-size: 16px;
+            margin-top: 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+		    font-family: 'Poppins';
+            background-color: #fff000;
+	        background: linear-gradient(90deg, #00001f, #808080);}
+
+       #introText {
+
+            font-size: 18px;
+            margin-top: 10px;
+        }
+	
+	</style>
+    <link rel="stylesheet" href="styles.css">
+    <title> About Me </title>
+</head>
+<body>
+
+    <div class="about-container">
+        <h1>About Me</h1>
+        <p id="introText"> Hi, I’m a Web Developer! Welcome to My Website </p>
+		<p id="introText"> My name is Omar & I’m majoring in Software Engineering 🧑🏻‍💻. </p>
+		
+	<footer>
+        <p>Contact me at  <a href="mailto:omariito20@gmail.com" target="_blank">omariito20@gmail.com</a> OR <a href="https://www.facebook.com/profile.php?id=100017444977710&mibextid=LQQJ4d" target="_blank">Facebook</a>.</p>
+    </footer>
+		<button onclick="toggleAbout()"> <a href="ITTT GPA.html" Class="edit-link">← Home</a></button>
+        
+        <script src="script.js"></script>
+		<!-- <h5>&copy; 2024 copyright <a href="ITTT GPA.html">ITTT AVG.</a></h5> -->
+		<h5>© 2024 by ITTT GPA. All rights reserved.</h5>
+
+    </div>
+	<script>
+	function toggleIntroduction() {
+    const introText = document.getElementById("introText");
+    introText.style.display = (introText.style.display === "none" || introText.style.display === "") ? "block" : "none";
+    }
+</script>
+</body>
+</html> 

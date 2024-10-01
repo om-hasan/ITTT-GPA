@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'Poppins';
+            background: linear-gradient(235deg, #ffffff, #000000);
+            animation: waveAnimation 2s linear infinite;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+		
+        .calculator-container {
+            background: linear-gradient(200deg, #ffffff, #000000);
+            animation: waveAnimation 2s linear infinite;
+            padding: 100px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.1); 
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5), 
+               0 0 20px rgba(255, 255, 255, 0.3) inset; 
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+            text-align: center;
+        }
+        
+        h1 {
+            margin-bottom: 20px;
+        }
+        
+        .edit-link {
+            color: white; 
+            text-decoration: none; 
+            font-weight: bold;
+        }
+
+        .edit-link:hover {
+            text-decoration: underline; 
+        }
+        
+        button {
+            background-color: #00001f;
+            color: #fff;
+            padding: 10px 20px;
+            font-size: 16px;
+            margin-bottom: 20px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #fff000;
+			background: linear-gradient(90deg, #00001f, #808080);
+        }
+
+        .subject-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .subject-container input {
+            width: 30%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+
+        #aboutContent {
+            display: none;
+            margin-top: 20px;
+            font-size: 18px;
+        }
+		
+		.delete-button {
+            background-color: #00001f;
+            color: #fff;
+            padding: 6px 20px;
+            font-size: 14px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .delete-button:hover {
+            background-color: #00001f;
+        }
+		
+		
+    </style>
+    <title> ITTT AVG </title>
+</head>
+<body>
+    <div class="calculator-container">
+        <p><h1> ITTT AVG </h1></p>
+		<p class="larger-font"><strong> Calculate the semester average of the JUST </strong></p>
+		</br>
+		<!-- <a href="About Me.html">About Me</a> -->
+        <button onclick="toggleAbout()"> <a href="About Me.html" class="edit-link"> About Me →</a></button>
+        <div id="aboutContent">
+
+        <footer>
+        </footer>
+        </div>
+        <p>  </p>
+
+        <div id="subjectsContainer">
+        </div>
+        <button onclick="addSubject()"> • Add Subject </button>
+        <button onclick="calculateGPA()"> • Calculate GPA </button>
+        <div id="result"></div>
+
+		<!-- <h5>&copy; 2024 copyright: <a href="ITTT GPA.html"> ITTT AVG. </a></h5> -->
+		</br>
+		<button onclick="toggleAbout()"> <a href="cumulative GPA.html" class="edit-link"> If you want to calculate the cumulative GPA → </a></button>
+        <!--<button onclick="calculateCumulativeAverage()"> If you want to calculate the cumulative GPA: </button> -->
+		<!--<h5>&copy; 2024 copyright: <a href="ITTT GPA.html"> ITTT AVG. </a></h5>-->
+		
+		<h5>© 2024 by ITTT GPA. All rights reserved.</h5>
+
+    </div>
+	
+    <script>
+        let subjects = [];
+
+        function addSubject() {
+            if (subjects.length >= 9) {
+                alert("You can only add up to 9 subjects."); 
+                return;
+            }
+
+            const subjectContainer = document.getElementById('subjectsContainer');
+            const newSubjectDiv = document.createElement('div');
+            newSubjectDiv.classList.add('subject-container');
+
+            newSubjectDiv.innerHTML = `
+                <input type = "text" class = "subject-name" placeholder = "Subject Name">
+                <input type = "number" class = "subject-credits" placeholder = "Credits">
+                <input type = "text" class = "subject-grade" placeholder = "Grade">
+				<button class = "delete-button" onclick = "deleteSubject(this)"> Delete </button>
+            `;
+
+            subjectContainer.appendChild(newSubjectDiv);
+            subjects.push({ name: '', credits: 0, grade: '' });
+        }
+		
+		function deleteSubject(button) {
+            const subjectContainer = button.parentNode;
+            const index = Array.from(subjectContainer.parentNode.children).indexOf(subjectContainer);
+            
+            subjectContainer.remove();
+            subjects.splice(index, 1);
+        }
+
+        function calculateGPA() {
+            subjects = []; 
+
+            const subjectContainers = document.querySelectorAll('.subject-container');
+            
+            subjectContainers.forEach((container, index) => {
+                const name = container.querySelector('.subject-name').value;
+                const credits = parseFloat(container.querySelector('.subject-credits').value);
+                const grade = container.querySelector('.subject-grade').value.toUpperCase();
+
+                if (name && !isNaN(credits) && credits > 0 && credits <= 6 && /^[A-F+-]*$/.test(grade)) {
+                    subjects.push({ name, credits, grade });
+                }
+            });
+
+
+            if (subjects.length === 0) {
+                alert('Please enter valid information for at least one subject.');
+                return;
+            }
+
+            displayResult();
+        }
+
+
+        function displayResult() {
+            const resultContainer = document.getElementById('result');
+            resultContainer.innerHTML = '';
+
+            const totalCredits = subjects.reduce((acc, subject) => acc + subject.credits, 0);
+            const totalGradePoints = subjects.reduce((acc, subject) => acc + calculateGradePoints(subject.grade) * subject.credits, 0);
+            const gpa = totalGradePoints / totalCredits;
+
+            resultContainer.innerHTML = `Semester GPA: ${gpa.toFixed(2)}`;
+			
+        }
+		
+		
+		function calculateCumulativeAverage() {
+            var table = document.getElementById("gradesTable");
+            var totalPoints = 0;
+            var totalCredits = 0;
+  
+            for (var i = 1, row; row = table.rows[i]; i++) {
+                var grade = parseFloat(row.cells[1].children[0].value);
+                var credits = parseFloat(row.cells[2].children[0].value);
+    
+            if (!isNaN(grade) && !isNaN(credits)) {
+                totalPoints += grade * credits;
+                totalCredits += credits;
+            }
+        }
+  
+  
+        var cumulativeAverage = totalPoints / totalCredits;
+  
+            if (!isNaN(cumulativeAverage)) {
+                document.getElementById("cumulativeAverage").textContent = cumulativeAverage.toFixed(2);
+            } else {
+                document.getElementById("cumulativeAverage").textContent = "N/A";
+            }
+        }
+
+        function calculateGradePoints(grade) {
+            switch (grade) {
+                case 'A+': return 4.20;
+                case 'A': return 4.00;
+                case 'A-': return 3.75;
+                case 'B+': return 3.50;
+                case 'B': return 3.25;
+                case 'B-': return 3.00;
+                case 'C+': return 2.75;
+                case 'C': return 2.50;
+                case 'C-': return 2.25;
+                case 'D+': return 2.00;
+                case 'D': return 1.75;
+                case 'D-': return 1.50;
+                case 'F': return 0.50;
+                default: return 0.0;
+            }
+        }
+
+        function toggleAbout() {
+            var aboutContent = document.getElementById("aboutContent");
+            aboutContent.style.display = (aboutContent.style.display === "none" || aboutContent.style.display === "") ? "block" : "none";
+        }
+		
+    </script>
+</body>
+</html>
